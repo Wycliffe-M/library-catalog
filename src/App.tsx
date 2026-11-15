@@ -1,10 +1,18 @@
-import type { Book } from './types/book'
+import { useState } from 'react'
 import { books } from './data/books'
 import { BookGrid } from './components/BookGrid'
+import { SearchBar } from './components/SearchBar'
 import './App.css'
 
 export default function App() {
-  const catalogBooks: Book[] = books
+  const [search, setSearch] = useState('')
+
+  const query = search.trim().toLowerCase()
+  const filteredBooks = books.filter(
+    (book) =>
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query),
+  )
 
   return (
     <div className="app">
@@ -15,7 +23,8 @@ export default function App() {
         </p>
       </header>
       <main>
-        <BookGrid books={catalogBooks} />
+        <SearchBar value={search} onChange={setSearch} />
+        <BookGrid books={filteredBooks} />
       </main>
     </div>
   )
