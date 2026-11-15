@@ -1,0 +1,104 @@
+.book-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px var(--color-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px var(--color-shadow-hover);
+}
+
+.book-card-cover {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-cover-text);
+  background-color: var(--color-cover-default);
+  user-select: none;
+}
+
+.cover--fantasy {
+  background-color: var(--color-cover-fantasy);
+}
+
+.cover--science-fiction {
+  background-color: var(--color-cover-science-fiction);
+}
+
+.cover--mystery {
+  background-color: var(--color-cover-mystery);
+}
+
+.cover--non-fiction {
+  background-color: var(--color-cover-non-fiction);
+}
+
+.book-card-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0.5rem;
+}
+
+.book-card-genre {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+.book-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.book-card-author {
+  font-size: 0.9375rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.book-card-footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.book-card-availability {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  width: fit-content;
+}
+
+.book-card-availability--available,
+.availability--available {
+  background-color: var(--color-available-bg);
+  color: var(--color-available-text);
+}
+
+.book-card-availability--out,
+.availability--out {
+  background-color: var(--color-out-bg);
+  color: var(--color-out-text);
+}
