@@ -1,0 +1,32 @@
+.empty-state {
+  max-width: 480px;
+  margin: 2rem auto;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.empty-state-title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-serif);
+  color: var(--color-text);
+}
+
+.empty-state-text {
+  margin: 0 0 1.25rem;
+  color: var(--color-muted);
+}
+
+.empty-state-button {
+  padding: 0.5rem 1.25rem;
+  font: inherit;
+  color: var(--color-surface);
+  background-color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.empty-state-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

@@ -6,6 +6,7 @@ import { SearchBar } from './components/SearchBar'
 import { GenreFilter } from './components/GenreFilter'
 import { AvailabilityToggle } from './components/AvailabilityToggle'
 import { BookDetailModal } from './components/BookDetailModal'
+import { EmptyState } from './components/EmptyState'
 import './App.css'
 
 export default function App() {
@@ -25,6 +26,12 @@ export default function App() {
     return matchesSearch && matchesGenre && matchesAvailability
   })
 
+  const clearFilters = () => {
+    setSearch('')
+    setGenre('all')
+    setAvailableOnly(false)
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -39,7 +46,11 @@ export default function App() {
           <GenreFilter genres={genres} selected={genre} onSelect={setGenre} />
           <AvailabilityToggle checked={availableOnly} onChange={setAvailableOnly} />
         </div>
-        <BookGrid books={filteredBooks} onSelectBook={setSelectedBook} />
+        {filteredBooks.length === 0 ? (
+          <EmptyState onClear={clearFilters} />
+        ) : (
+          <BookGrid books={filteredBooks} onSelectBook={setSelectedBook} />
+        )}
       </main>
       {selectedBook !== null && (
         <BookDetailModal
