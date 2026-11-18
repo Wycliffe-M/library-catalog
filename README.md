@@ -1,75 +1,97 @@
-# React + TypeScript + Vite
+# Library Catalog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A single-page library catalog preview built with React, TypeScript and Vite. Browse a collection of books, search by title or author, filter by genre, show only available books, and open a detail view for any book.
 
-Currently, two official plugins are available:
+This is a frontend-only preview with mock data. It mirrors the data model of my full-stack library management system (NestJS + Prisma + PostgreSQL) so the same components can be connected to the real API later.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**Live demo:** _link coming soon_
 
-## React Compiler
+<!-- Optional: add a screenshot at docs/screenshot.png and uncomment the line below -->
+<!-- ![Library Catalog screenshot](docs/screenshot.png) -->
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Responsive grid of book cards (title, author, genre, "3 of 4 available")
+- Live search by title or author (case-insensitive)
+- Genre filter: All, Fantasy, Science Fiction, Mystery, Non-Fiction
+- "Available only" toggle
+- Filters combine: search, genre and availability all apply together
+- Detail modal with ISBN and availability; closes with Esc, a backdrop click, or the Close button
+- Empty state with a "Clear filters" button when nothing matches
+- Colored cover placeholders with title initials (no remote images)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- React 19 with hooks (`useState`, `useEffect`, `useRef`)
+- TypeScript
+- Vite
+- Plain CSS with design tokens (CSS variables), no UI libraries
+- ESLint
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Requires Node.js 20.19 or newer.
 
+```bash
+git clone https://github.com/Wycliffe-M/library-catalog.git
+cd library-catalog
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Then open http://localhost:5173.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Command           | What it does                                 |
+| ----------------- | -------------------------------------------- |
+| `npm run dev`     | Start the development server with hot reload |
+| `npm run build`   | Type-check and build for production          |
+| `npm run preview` | Serve the production build locally           |
+| `npm run lint`    | Run ESLint                                   |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project structure
 
 ```
+src/
+├── main.tsx                  # Entry point
+├── App.tsx                   # Holds all state: search, genre, availableOnly, selectedBook
+├── index.css                 # Global styles and CSS variables (colors, fonts)
+├── types/book.ts             # Book and Genre interfaces
+├── data/books.ts             # Mock data (16 books, 4 genres)
+├── utils/coverInitials.ts    # Cover initials, skipping words like "The" and "A"
+└── components/
+    ├── SearchBar
+    ├── GenreFilter
+    ├── AvailabilityToggle
+    ├── BookGrid
+    ├── BookCard
+    ├── BookDetailModal
+    └── EmptyState
+```
+
+State lives in `App`. The filtered list is calculated from that state on every render and is never stored separately. Components receive data and callback functions through props.
+
+## Design
+
+A warm, bookish look: cream background, forest green accent, serif headings. Every color is a CSS variable defined in `src/index.css`, so the theme can be changed in one place (for example, `--color-accent`).
+
+## How I built it
+
+I built this as an exercise in prompting an AI coding agent and in learning React and TypeScript.
+
+- **Agent-built (Google Antigravity, Gemini 3.8 Flash):** the book grid and cards, and the detail modal. Each was one scoped prompt covering the goal, tech constraints, files to touch, behavior, and concrete design values (hex codes and pixel sizes instead of "make it look nice").
+- **Written by hand, with AI tutoring:** the types and mock data, search, genre filter, availability toggle, empty state and cover initials. I wrote these myself to learn the patterns (controlled inputs, lifting state up, conditional rendering).
+
+What worked well:
+
+- One small step per prompt, with an explicit list of files the agent may not touch
+- Reviewing every diff before accepting, with permission prompts set to review each command
+- Running `tsc -b` and `npm run lint` after each step, and committing a working version before the next one
+
+What I would do differently: the agent left duplicate class names on some elements (for example `cover` next to `modal-cover`). A cleanup pass would remove them.
+
+## Known limitations
+
+- The modal has no focus trap, and focus does not return to the card when it closes
+- Search matches substrings only (no fuzzy matching)
+- Mock data only: no backend, login, or borrowing
+- No routing: the detail view is a modal, not a page
