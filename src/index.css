@@ -10,6 +10,7 @@
   --color-available-text: #2f5d3a;
   --color-out-bg: #f6e3e0;
   --color-out-text: #9b3b32;
+  --color-backdrop: rgba(43, 42, 38, 0.5);
 
   /* Genre cover colors (muted earthy tones) */
   --color-cover-fantasy: #4a6741;

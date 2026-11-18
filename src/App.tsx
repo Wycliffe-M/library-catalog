@@ -1,15 +1,18 @@
 import { useState } from 'react'
+import type { Book } from './types/book'
 import { books, genres } from './data/books'
 import { BookGrid } from './components/BookGrid'
 import { SearchBar } from './components/SearchBar'
 import { GenreFilter } from './components/GenreFilter'
 import { AvailabilityToggle } from './components/AvailabilityToggle'
+import { BookDetailModal } from './components/BookDetailModal'
 import './App.css'
 
 export default function App() {
   const [search, setSearch] = useState('')
   const [genre, setGenre] = useState('all')
   const [availableOnly, setAvailableOnly] = useState(false)
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
 
   const query = search.trim().toLowerCase()
   const filteredBooks = books.filter((book) => {
@@ -36,8 +39,14 @@ export default function App() {
           <GenreFilter genres={genres} selected={genre} onSelect={setGenre} />
           <AvailabilityToggle checked={availableOnly} onChange={setAvailableOnly} />
         </div>
-        <BookGrid books={filteredBooks} />
+        <BookGrid books={filteredBooks} onSelectBook={setSelectedBook} />
       </main>
+      {selectedBook !== null && (
+        <BookDetailModal
+          book={selectedBook}
+          onClose={() => setSelectedBook(null)}
+        />
+      )}
     </div>
   )
 }

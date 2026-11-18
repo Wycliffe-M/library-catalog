@@ -1,25 +1,27 @@
 import type { Book } from '../types/book'
+import { getCoverInitials } from '../utils/coverInitials'
 import './BookCard.css'
 
 interface BookCardProps {
   book: Book
+  onSelectBook?: (book: Book) => void
+  onSelect?: (book: Book) => void
 }
 
-function getCoverInitials(title: string): string {
-  const words = title.trim().split(/\s+/).filter(Boolean)
-  return words
-    .slice(0, 2)
-    .map((word) => word.charAt(0))
-    .join('')
-    .toUpperCase()
-}
-
-export function BookCard({ book }: BookCardProps) {
+export function BookCard({ book, onSelectBook, onSelect }: BookCardProps) {
   const isAvailable = book.availableCopies > 0
   const initials = getCoverInitials(book.title)
   const availabilityText = isAvailable
     ? `${book.availableCopies} of ${book.totalCopies} available`
     : 'All copies out'
+
+  const handleClick = () => {
+    if (onSelectBook) {
+      onSelectBook(book)
+    } else if (onSelect) {
+      onSelect(book)
+    }
+  }
 
   return (
     <article className="book-card">
@@ -31,7 +33,15 @@ export function BookCard({ book }: BookCardProps) {
       </div>
       <div className="book-card-content">
         <span className="book-card-genre">{book.genre.name}</span>
-        <h2 className="book-card-title">{book.title}</h2>
+        <h2 className="book-card-title">
+          <button
+            type="button"
+            className="book-card-title-button"
+            onClick={handleClick}
+          >
+            {book.title}
+          </button>
+        </h2>
         <p className="book-card-author">{book.author}</p>
         <div className="book-card-footer">
           <span

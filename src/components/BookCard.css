@@ -1,4 +1,5 @@
 .book-card {
+  position: relative;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 8px;
@@ -68,6 +69,30 @@
   line-height: 1.3;
   color: var(--color-text);
   margin: 0;
+}
+
+.book-card-title-button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-align: inherit;
+  cursor: pointer;
+  display: inline;
+}
+
+.book-card-title-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.book-card-title-button:focus-visible,
+.book-card button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .book-card-author {
